@@ -5,6 +5,24 @@ import tensorflow as tf
 from tensorflow.keras.layers import Conv2D, Input, Dense, BatchNormalization, MaxPool2D, GlobalAveragePooling2D
 
 
+model = tensorflow.keras.sequntial(
+    [
+        Input(shape = (28,28,1)),
+        Conv2D(32 , (3,3) , activation = 'relu'),
+        Conv2D(64 , (3,3) , activation = 'relu'),
+        MaxPool2D(),
+        BatchNormalization(),
+
+        Conv2D(128 , (3 ,3) , activation = 'relu'),
+        MaxPool2D(),
+        BatchNormalization(),
+
+        Dense(64 , activation = 'relu'),
+        Dense(10 , activation = 'Softmax')
+    ]
+)
+
+
 def image_display(examples , labels):
 
     plt.figure(figsize = (10 , 10))
