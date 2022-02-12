@@ -5,9 +5,9 @@ import tensorflow as tf
 from tensorflow.keras.layers import Conv2D, Input, Dense, BatchNormalization, MaxPool2D, GlobalAveragePooling2D
 
 
-model = tensorflow.keras.sequntial(
+model = tf.keras.Sequential(
     [
-        Input(shape = (28,28,1)),
+        Input(shape = (28,28,1)),## Conv2D reuqires a 4 dimensional tensor as input
         Conv2D(32 , (3,3) , activation = 'relu'),
         Conv2D(64 , (3,3) , activation = 'relu'),
         MaxPool2D(),
@@ -48,12 +48,23 @@ def image_display(examples , labels):
 if __name__ == '__main__':
     (x_train , y_train) , (x_test , y_test) = tf.keras.datasets.mnist.load_data()
 
-    print("Size of training x = " , x_train.shape)
-    print("Size of training y = " , y_train.shape)
-    print("Size of test x = " , x_test.shape)
-    print("Size of test y = " , y_test.shape)
+    ##print("Size of training x = " , x_train.shape)
+    #print("Size of training y = " , y_train.shape)
+    #print("Size of test x = " , x_test.shape)
+    #print("Size of test y = " , y_test.shape)
 
-    image_display(x_train , y_train)
+
+    x_train = x_train.astype('float32') / 255
+    x_test = x_test.astype('float32') / 255
+
+    x_train = np.expand_dims(x_train , axis = -1)
+    x_test = np.expand_dims(x_test , axis = -1)
+
+    model.compile(optimizer = 'adam' , loss = 'categorial_crossentropy' , metrics = 'accuracy')
+    model.fit(x_train , y_train , batch_size = 64 , epochs = 10 , validation_split = 0.2)
+
+    model.evaluate(x_test , y_test , batch_size = 64)
+    ##image_display(x_train , y_train)
 
 
     
